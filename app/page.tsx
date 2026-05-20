@@ -14,7 +14,7 @@ const tools = [
         description: "Compare and convert times between different world time zones.",
         icon: "⏰",
         href: "/time-zone-converter",
-        status: "Coming Soon",
+        status: "Active",
         color: "from-amber-500 to-orange-500",
     },
     {
@@ -22,7 +22,7 @@ const tools = [
         description: "Reduce image file size without losing premium quality.",
         icon: "📉",
         href: "/image-compressor",
-        status: "Coming Soon",
+        status: "Active",
         color: "from-emerald-500 to-teal-500",
     },
     {
@@ -30,7 +30,7 @@ const tools = [
         description: "Compress heavy PDF files to smaller size for easy sharing.",
         icon: "📄",
         href: "/pdf-compressor",
-        status: "Coming Soon",
+        status: "Active",
         color: "from-rose-500 to-red-500",
     },
     {
@@ -38,7 +38,7 @@ const tools = [
         description: "Remove background from images automatically using local AI.",
         icon: "✨",
         href: "/background-remover",
-        status: "Coming Soon",
+        status: "Active",
         color: "from-purple-500 to-pink-500",
     },
 ];
