@@ -1,65 +1,127 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+const tools = [
+    {
+        name: "Image Converter",
+        description: "Convert images between JPG and PNG instantly in your browser.",
+        icon: "📸",
+        href: "/image-converter",
+        status: "Active",
+        color: "from-blue-500 to-indigo-500",
+    },
+    {
+        name: "Time Zone Converter",
+        description: "Compare and convert times between different world time zones.",
+        icon: "⏰",
+        href: "/time-zone-converter",
+        status: "Coming Soon",
+        color: "from-amber-500 to-orange-500",
+    },
+    {
+        name: "Image Compressor",
+        description: "Reduce image file size without losing premium quality.",
+        icon: "📉",
+        href: "/image-compressor",
+        status: "Coming Soon",
+        color: "from-emerald-500 to-teal-500",
+    },
+    {
+        name: "PDF Compressor",
+        description: "Compress heavy PDF files to smaller size for easy sharing.",
+        icon: "📄",
+        href: "/pdf-compressor",
+        status: "Coming Soon",
+        color: "from-rose-500 to-red-500",
+    },
+    {
+        name: "Background Remover",
+        description: "Remove background from images automatically using local AI.",
+        icon: "✨",
+        href: "/background-remover",
+        status: "Coming Soon",
+        color: "from-purple-500 to-pink-500",
+    },
+];
+
+export default function HomePage() {
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white p-4 sm:p-8 md:p-12">
+            {/* Background Decorative Circles */}
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="max-w-6xl mx-auto relative z-10">
+                {/* Header Section */}
+                <header className="text-center mb-12 md:mb-16">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+                        ToolHub Dashboard
+                    </h1>
+                    <p className="text-sm sm:text-base text-slate-400 mt-3 max-w-xl mx-auto">
+                        A premium collection of high-utility tools running 100% locally inside your browser. No server uploads required.
+                    </p>
+                </header>
+
+                {/* Tools Grid Area */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {tools.map((tool, index) => {
+                        const isActive = tool.status === "Active";
+
+                        return (
+                            <div
+                                key={index}
+                                className="group relative bg-slate-800/40 border border-slate-700/50 hover:border-slate-600 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/5 backdrop-blur-md hover:-translate-y-1"
+                            >
+                                {/* Status Badge */}
+                                <div className="absolute top-4 right-4">
+                                    <span
+                                        className={`text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${isActive
+                                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                            : "bg-slate-700/50 text-slate-400 border border-slate-600/30"
+                                            }`}
+                                    >
+                                        {tool.status}
+                                    </span>
+                                </div>
+
+                                {/* Tool Content */}
+                                <div>
+                                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${tool.color} text-2xl shadow-lg mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                                        {tool.icon}
+                                    </div>
+                                    <h2 className="text-lg font-bold text-slate-100 group-hover:text-white transition-colors">
+                                        {tool.name}
+                                    </h2>
+                                    <p className="text-xs sm:text-sm text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                                        {tool.description}
+                                    </p>
+                                </div>
+
+                                {/* Action Link Button */}
+                                <div className="mt-6">
+                                    {isActive ? (
+                                        <Link
+                                            href={tool.href}
+                                            className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-600/10"
+                                        >
+                                            Open Tool
+                                            <svg className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </Link>
+                                    ) : (
+                                        <button
+                                            disabled
+                                            className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold text-slate-500 bg-slate-800 border border-slate-700/50 cursor-not-allowed"
+                                        >
+                                            Locked
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    );
 }
