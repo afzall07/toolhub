@@ -11,17 +11,16 @@ export default function ImageCompressor() {
     const [compressing, setCompressing] = useState<boolean>(false);
     const [maxSizeKB, setMaxSizeKB] = useState<number>(500); // 500 KB
 
-    // 1. इमेज अपलोड हैंडलर
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             setOriginalImage(file);
-            setCompressedImage(null); // पुराना पुराना कम्प्रेशन क्लियर करें
+            setCompressedImage(null);
             setPreviewUrl(URL.createObjectURL(file));
         }
     };
 
-    // 2. कम्प्रेशन लॉजिक फंक्शन
     // const handleCompress = async () => {
     //     if (!originalImage) return;
 
@@ -45,13 +44,13 @@ export default function ImageCompressor() {
     // };
 
     // 2. बिल्कुल सटीक (Exact) KB कम्प्रेशन करने वाला जादुई लॉजिक
+
     const handleCompress = async () => {
         if (!originalImage) return;
 
         setCompressing(true);
 
         try {
-            // इमेज को रीड करने के लिए प्रिव्यू URL का उपयोग करेंगे
             const img = new Image();
             img.src = previewUrl!;
 
@@ -60,13 +59,11 @@ export default function ImageCompressor() {
                 const ctx = canvas.getContext("2d");
                 if (!ctx) return;
 
-                // स्टेप 1: इमेज की ओरिजिनल डाइमेंशन सेट करें
                 let width = img.width;
                 let height = img.height;
 
-                // अगर इमेज बहुत भारी (जैसे 27MB) है, तो पहले उसकी चौड़ाई-लंबाई को थोड़ा स्केल डाउन करें
                 if (originalImage.size > 5 * 1024 * 1024) {
-                    const scaleFactor = 0.7; // 30% रिज़ॉल्यूशन छोटा किया
+                    const scaleFactor = 0.7;
                     width *= scaleFactor;
                     height *= scaleFactor;
                 }
@@ -75,12 +72,10 @@ export default function ImageCompressor() {
                 canvas.height = height;
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // स्टेप 2: रिकर्सिव लूप (Iterative Loop) से सटीक साइज पाना
-                let quality = 0.90; // 90% क्वालिटी से शुरू करेंगे
+                let quality = 0.90;
                 let compressedBlob: Blob | null = null;
                 let currentSizeKB = Infinity;
 
-                // यह लूप तब तक चलेगा जब तक साइज यूजर के सेलेक्टेड KB से छोटा न हो जाए (मिनिमम 5% क्वालिटी तक)
                 while (currentSizeKB > maxSizeKB && quality > 0.05) {
                     compressedBlob = await new Promise<Blob | null>((resolve) =>
                         canvas.toBlob((blob) => resolve(blob), "image/jpeg", quality)
@@ -90,25 +85,22 @@ export default function ImageCompressor() {
 
                     currentSizeKB = compressedBlob.size / 1024;
 
-                    // अगर साइज अभी भी बड़ा है, तो क्वालिटी को 5% और घटाएं
                     if (currentSizeKB > maxSizeKB) {
                         quality -= 0.05;
                     }
                 }
 
-                // स्टेप 3: अगर सबसे कम क्वालिटी पर भी साइज बड़ा आ रहा है, तो डाइमेंशन और छोटी करो
                 if (compressedBlob && (compressedBlob.size / 1024) > maxSizeKB) {
                     canvas.width = width * 0.5;
                     canvas.height = height * 0.5;
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
                     compressedBlob = await new Promise<Blob | null>((resolve) =>
-                        canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.2) // डायरेक्ट 20% क्वालिटी
+                        canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.2)
                     );
                 }
 
                 if (compressedBlob) {
-                    // Blob को वापस File ऑब्जेक्ट में बदलें ताकि डाउनलोड हैंडलर काम कर सके
                     const compressedFile = new File([compressedBlob], originalImage.name, {
                         type: "image/jpeg",
                     });
@@ -124,17 +116,13 @@ export default function ImageCompressor() {
     };
 
 
-    // 3. अपडेटेड "Save As" डाउनलोड हैंडलर
     const downloadImage = async () => {
         if (!compressedImage) return;
 
-        // चेक करें कि क्या ब्राउज़र नया "Save As" API सपोर्ट करता है
         if ("showSaveFilePicker" in window) {
             try {
-                // डिफ़ॉल्ट फाइल का नाम तय करना
                 const defaultName = `compressed-${originalImage?.name || "image.jpg"}`;
 
-                // "Save As" डायलॉग बॉक्स खोलना
                 const handle = await (window as any).showSaveFilePicker({
                     suggestedName: defaultName,
                     types: [
@@ -147,27 +135,23 @@ export default function ImageCompressor() {
                     ],
                 });
 
-                // यूज़र द्वारा चुनी गई लोकेशन पर फाइल लिखना
                 const writable = await handle.createWritable();
                 await writable.write(compressedImage);
                 await writable.close();
             } catch (err) {
-                // अगर यूज़र "Cancel" बटन दबा देता है, तो यहाँ एरर हैंडल होगा (कुछ नहीं करना है)
                 console.log("Save As dialog was closed or cancelled");
             }
         } else {
-            // फॉलबैक (Fallback): अगर ब्राउज़र पुराना है, तो डिफ़ॉल्ट डायरेक्ट डाउनलोड चलाएं
             const url = URL.createObjectURL(compressedImage);
             const link = document.createElement("a");
             link.href = url;
             link.download = `compressed-${originalImage?.name || "image.jpg"}`;
             link.click();
-            URL.revokeObjectURL(url); // मेमोरी साफ़ करने के लिए
+            URL.revokeObjectURL(url);
         }
     };
 
 
-    // साइज को KB या MB में सुंदर दिखाने के लिए हेल्पर फंक्शन
     const formatSize = (bytes: number) => {
         if (bytes === 0) return "0 Bytes";
         const k = 1024;

@@ -11,25 +11,22 @@ export default function BackgroundRemover() {
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingStatus, setLoadingStatus] = useState<string>("");
 
-    // 1. इमेज सिलेक्ट करना
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files) {
             const file = e.target.files[0];
             setImageFile(file);
-            setOutputImageUrl(null); // पुरानी इमेज को साफ करें
+            setOutputImageUrl(null);
             setLoadingStatus("");
             setInputPreviewUrl(URL.createObjectURL(file));
         }
     };
 
-    // 2. AI बैकग्राउंड रिमूवल लॉजिक
     const handleRemoveBackground = async () => {
         if (!imageFile) return;
         setLoading(true);
         setLoadingStatus("Downloading AI Model... (First time may take a few seconds)");
 
         try {
-            // अब यह बिना किसी कंफ्यूजन के लाइब्रेरी वाले removeBackground को कॉल करेगा
             const processedBlob = await removeBackground(imageFile, {
                 progress: (key, current, total) => {
                     if (key.includes("fetch")) {
@@ -40,7 +37,6 @@ export default function BackgroundRemover() {
                 },
             });
 
-            // कनवर्टेड ट्रांसपेरेंट इमेज के लिए Blob URL बनाना
             const url = URL.createObjectURL(processedBlob);
             setOutputImageUrl(url);
             setLoadingStatus("Success! Background removed completely.");
@@ -53,13 +49,12 @@ export default function BackgroundRemover() {
     };
 
 
-    // 3. "Save As" पॉपअप के साथ डाउनलोड हैंडलर
     const downloadResult = async () => {
         if (!outputImageUrl || !imageFile) return;
 
         if ("showSaveFilePicker" in window) {
             try {
-                const defaultName = `no-bg-${imageFile.name.split(".")[0]}.png`; // हमेशा PNG डाउनलोड होगा
+                const defaultName = `no-bg-${imageFile.name.split(".")[0]}.png`;
                 const handle = await (window as any).showSaveFilePicker({
                     suggestedName: defaultName,
                     types: [
@@ -71,7 +66,6 @@ export default function BackgroundRemover() {
                 });
 
                 const writable = await handle.createWritable();
-                // Blob URL से डेटा फेच करके फाइल में राइट करना
                 const response = await fetch(outputImageUrl);
                 const blob = await response.blob();
                 await writable.write(blob);
@@ -80,7 +74,6 @@ export default function BackgroundRemover() {
                 console.log("Save As cancelled");
             }
         } else {
-            // फॉलबैक पुराने ब्राउज़र्स के लिए
             const link = document.createElement("a");
             link.href = outputImageUrl;
             link.download = `no-bg-${imageFile.name.split(".")[0]}.png`;
@@ -139,7 +132,7 @@ export default function BackgroundRemover() {
                         <p className="text-xs text-slate-500">Supports JPG, PNG up to 5MB</p>
                     </div>
                 </div>
-                {/* Selected Image Preview (बिल्कुल छोटा और फिक्स्ड साइज) */}
+                {/* Selected Image Preview */}
                 {inputPreviewUrl && (
                     <div className="mb-6 p-3 bg-slate-900/40 rounded-xl border border-slate-700/50 flex items-center gap-3 text-left">
                         <div className="w-14 h-14 rounded-lg overflow-hidden border border-slate-700 bg-slate-800 flex-shrink-0">

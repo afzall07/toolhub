@@ -11,30 +11,24 @@ export default function PDFCompressor() {
     const [compressedSize, setCompressedSize] = useState<number>(0);
     const [compressing, setCompressing] = useState<boolean>(false);
 
-    // 1. PDF फाइल सिलेक्ट करना
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             setPdfFile(file);
             setOriginalSize(file.size);
-            setCompressedPdf(null); // पुराना पुराना कम्प्रेशन क्लियर करें
+            setCompressedPdf(null);
         }
     };
 
-    // 2. PDF कम्प्रेशन लॉजिक
     const compressPDF = async () => {
         if (!pdfFile) return;
         setCompressing(true);
 
         try {
-            // फाइल को ArrayBuffer में रीड करना
             const fileArrayBuffer = await pdfFile.arrayBuffer();
 
-            // pdf-lib की मदद से PDF को लोड करना
             const pdfDoc = await PDFDocument.load(fileArrayBuffer);
 
-            // बैकग्राउंड में PDF के स्ट्रक्चर को ऑप्टिमाइज़ और अनचाहे अनयूज़्ड ऑब्जेक्ट्स को डिलीट करना
-            // (यह बिना क्वालिटी खराब किए PDF का साइज घटाता है)
             const compressedBytes = await pdfDoc.save({
                 useObjectStreams: true,
                 addDefaultPage: false,
@@ -49,7 +43,6 @@ export default function PDFCompressor() {
         }
     };
 
-    // 3. "Save As" पॉपअप के साथ डाउनलोड हैंडलर
     const downloadPDF = async () => {
         if (!compressedPdf || !pdfFile) return;
 
@@ -73,7 +66,6 @@ export default function PDFCompressor() {
                 console.log("Save As cancelled");
             }
         } else {
-            // फॉलबैक पुराने ब्राउज़र्स के लिए (एरर फ्री टाइप-सेफ कोड)
             const blob = new Blob([new Uint8Array(compressedPdf)], { type: "application/pdf" });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
@@ -84,8 +76,6 @@ export default function PDFCompressor() {
         }
 
     };
-
-    // साइज को सुंदर KB/MB में दिखाने के लिए
     const formatSize = (bytes: number) => {
         if (bytes === 0) return "0 Bytes";
         const k = 1024;
