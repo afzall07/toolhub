@@ -26,8 +26,8 @@ const tools = [
         color: "from-emerald-500 to-teal-500",
     },
     {
-        name: "Images to PDF Converter",
-        description: "Convert images & text file to PDF in seconds.",
+        name: "Images to PDF Converter $ PDF Merger",
+        description: "Convert images & text file to PDF in seconds. Merge Multiple PDF into Single PDF.",
         icon: "📄",
         href: "/image-to-pdf",
         status: "Active",
