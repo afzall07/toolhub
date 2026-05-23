@@ -3,7 +3,7 @@ import Link from "next/link";
 const tools = [
     {
         name: "Image Converter",
-        description: "Convert images between JPG and PNG instantly in your browser.",
+        description: "Convert images between JPG and PNG instantly.",
         icon: "📸",
         href: "/image-converter",
         status: "Active",
@@ -26,10 +26,10 @@ const tools = [
         color: "from-emerald-500 to-teal-500",
     },
     {
-        name: "PDF Compressor",
-        description: "Compress heavy PDF files to smaller size for easy sharing.",
+        name: "Images to PDF Converter",
+        description: "Convert images & text file to PDF in seconds.",
         icon: "📄",
-        href: "/pdf-compressor",
+        href: "/image-to-pdf",
         status: "Active",
         color: "from-rose-500 to-red-500",
     },
