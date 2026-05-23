@@ -11,28 +11,45 @@ export default function FileToPdfConverter() {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setFiles(Array.from(e.target.files));
+            const newFiles = Array.from(e.target.files);
+            setFiles((prevFiles) => [...prevFiles, ...newFiles]);
             setDownloadUrl(null);
+            e.target.value = '';
         }
     };
+
+    const removeFile = (indexToRemove: number) => {
+        setFiles((prevFiles) => prevFiles.filter((_, index) => index !== indexToRemove));
+        setDownloadUrl(null);
+    }
+
 
     const convertToPdf = async () => {
         if (files.length === 0) return;
         setIsConverting(true);
 
         try {
+            // Empty pdf document 
             const pdfDoc = await PDFDocument.create();
 
             for (const file of files) {
                 const fileArrayBuffer = await file.arrayBuffer();
 
-                // 2. Agar image PNG hai
+                // --- FEATURE: PDF MERGE LOGIC ---
+                if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+                    const sourcePdfDoc = await PDFDocument.load(fileArrayBuffer);
+                    const pageIndices = sourcePdfDoc.getPageIndices();
+                    const copiedPages = await pdfDoc.copyPages(sourcePdfDoc, pageIndices);
+                    copiedPages.forEach((page) => pdfDoc.addPage(page));
+                }
+
+                // --- IMAGE: PNG LOGIC ---
                 if (file.type === 'image/png') {
                     const pngImage = await pdfDoc.embedPng(fileArrayBuffer);
                     const page = pdfDoc.addPage([pngImage.width, pngImage.height]);
                     page.drawImage(pngImage, { x: 0, y: 0, width: pngImage.width, height: pngImage.height });
                 }
-                // 3. Agar image JPEG/JPG hai
+                // --- IMAGE: JPEG LOGIC ---
                 else if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
                     const jpgImage = await pdfDoc.embedJpg(fileArrayBuffer);
                     const page = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
@@ -55,7 +72,6 @@ export default function FileToPdfConverter() {
 
         } catch (error) {
             console.error('Conversion failed:', error);
-            alert('File ko PDF mein convert karne mein dikkat aayi.');
         } finally {
             setIsConverting(false);
         }
@@ -97,8 +113,9 @@ export default function FileToPdfConverter() {
                 <div className="relative group border-2 border-dashed border-slate-700 hover:border-rose-500 rounded-xl p-6 text-center cursor-pointer transition-all bg-slate-900/30 hover:bg-slate-900/50 mb-6">
                     <input
                         type="file"
-                        accept="image/png, image/jpeg, image/jpg, text/plain"
+                        accept="image/png, image/jpeg, image/jpg, text/plain, application/pdf"
                         onChange={handleFileChange}
+                        multiple
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
                     <div className="space-y-2">
@@ -112,22 +129,28 @@ export default function FileToPdfConverter() {
                 </div>
 
                 {/* Stats View */}
-                {files.length > 0 && (
-                    <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md mb-3">
-                        <p className="font-semibold mb-1">Selected Files:</p>
-                        <ul className="pl-5">
-                            {files.map((f, index) => (
-                                <li key={index}>{f.name} ({(f.size / 1024).toFixed(1)} KB)</li>
-                            ))}
-                        </ul>
+                {files.map((f, index) => (
+                    <div
+                        key={index}
+                        className="flex items-center justify-between p-2 bg-white border border-gray-200 rounded-md shadow-sm mb-1"
+                    >
+                        <span className="truncate max-w-[70%] font-medium text-gray-700">
+                            {f.name} <span className="text-xs text-gray-400">({(f.size / 1024).toFixed(1)} KB)</span>
+                        </span>
+                        <button
+                            onClick={() => removeFile(index)}
+                            className="text-xs bg-red-50 text-red-600 hover:bg-red-600 hover:text-white font-semibold px-2 py-1 rounded transition"
+                        >
+                            Remove
+                        </button>
                     </div>
-                )}
+                ))}
                 <button
                     onClick={convertToPdf}
                     disabled={files.length === 0 || isConverting}
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md disabled:bg-gray-400 transition"
+                    className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md disabled:bg-gray-400 transition"
                 >
-                    {isConverting ? 'Converting to PDF...' : 'Convert to PDF'}
+                    {isConverting ? 'Processing...' : 'Generate / Merge PDF'}
                 </button>
 
                 {downloadUrl && (
@@ -136,7 +159,7 @@ export default function FileToPdfConverter() {
                         download="converted_document.pdf"
                         className="w-full mt-2 inline-block text-center bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition"
                     >
-                        Download Generated PDF
+                        Download PDF
                     </a>
                 )}
 
