@@ -105,8 +105,8 @@ export default function FileToPdfConverter() {
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-red-500 text-2xl shadow-lg mb-3">
                         📄
                     </div>
-                    <h1 className="text-xl sm:text-2xl font-extrabold text-red-100 tracking-tight">IMAGES to PDF $ PDF Merger</h1>
-                    <p className="text-xl text-red-400 mt-1">Convert images & text file to PDF and Merge Multiple PDF into a Single PDF in seconds.</p>
+                    <h1 className="text-xl sm:text-2xl font-extrabold text-slate-100 tracking-tight">PDF Converter & Merger</h1>
+                    <p className="text-base text-red-400 mt-1">Convert images & text file to PDF and Merge Multiple PDF into a Single PDF in seconds.</p>
                 </div>
 
                 {/* Upload Zone */}

@@ -2,31 +2,7 @@ import Link from "next/link";
 
 const tools = [
     {
-        name: "Image Converter",
-        description: "Convert images between JPG and PNG instantly.",
-        icon: "📸",
-        href: "/image-converter",
-        status: "Active",
-        color: "from-blue-500 to-indigo-500",
-    },
-    {
-        name: "Time Zone Converter",
-        description: "Compare and convert times between different world time zones.",
-        icon: "⏰",
-        href: "/time-zone-converter",
-        status: "Active",
-        color: "from-amber-500 to-orange-500",
-    },
-    {
-        name: "Image Compressor",
-        description: "Reduce image file size without losing premium quality.",
-        icon: "📉",
-        href: "/image-compressor",
-        status: "Active",
-        color: "from-emerald-500 to-teal-500",
-    },
-    {
-        name: "Images to PDF Converter $ PDF Merger",
+        name: "Images to PDF Converter & PDF Merger",
         description: "Convert images & text file to PDF in seconds. Merge Multiple PDF into Single PDF.",
         icon: "📄",
         href: "/image-to-pdf",
@@ -41,6 +17,30 @@ const tools = [
         status: "Active",
         color: "from-purple-500 to-pink-500",
     },
+    {
+        name: "Image Type Converter",
+        description: "Convert images between JPG and PNG instantly.",
+        icon: "📸",
+        href: "/image-converter",
+        status: "Active",
+        color: "from-blue-500 to-indigo-500",
+    }, {
+        name: "Image Size Reducer",
+        description: "Reduce image file size without losing premium quality.",
+        icon: "📉",
+        href: "/image-compressor",
+        status: "Active",
+        color: "from-emerald-500 to-teal-500",
+    },
+    {
+        name: "Time Zone Converter",
+        description: "Compare and convert times between different world time zones.",
+        icon: "⏰",
+        href: "/time-zone-converter",
+        status: "Active",
+        color: "from-amber-500 to-orange-500",
+    }
+
 ];
 
 export default function HomePage() {
@@ -54,10 +54,10 @@ export default function HomePage() {
                 {/* Header Section */}
                 <header className="text-center mb-12 md:mb-16">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-                        ToolHub Dashboard
+                        Free And Secured Tools
                     </h1>
-                    <p className="text-sm sm:text-base text-slate-400 mt-3 max-w-xl mx-auto">
-                        A premium collection of high-utility tools running 100% locally inside your browser. No server uploads required.
+                    <p className="text-sm sm:text-base text-gray-100 mt-3 max-w-xl mx-auto">
+                        A free and powerful set of high-utility tools designed to help you work smarter. This easy-to-use suite streamlines your everyday tasks and improves your speed and efficiency.
                     </p>
                 </header>
 
@@ -91,7 +91,7 @@ export default function HomePage() {
                                     <h2 className="text-lg font-bold text-slate-100 group-hover:text-white transition-colors">
                                         {tool.name}
                                     </h2>
-                                    <p className="text-xs sm:text-sm text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                                    <p className="text-xs sm:text-sm text-slate-200 mt-2 line-clamp-2 leading-relaxed">
                                         {tool.description}
                                     </p>
                                 </div>
