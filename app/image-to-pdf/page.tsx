@@ -78,7 +78,7 @@ export default function FileToPdfConverter() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-hidden">
+        <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-indigo-950 text-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-hidden">
 
             {/* Background Decorative Circles */}
             <div className="absolute top-0 right-1/4 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -102,7 +102,7 @@ export default function FileToPdfConverter() {
 
                 {/* Header */}
                 <div className="mb-6">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-red-500 text-2xl shadow-lg mb-3">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br from-rose-500 to-red-500 text-2xl shadow-lg mb-3">
                         📄
                     </div>
                     <h1 className="text-xl sm:text-2xl font-extrabold text-slate-100 tracking-tight">PDF Converter & Merger</h1>
