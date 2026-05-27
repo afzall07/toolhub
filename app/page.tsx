@@ -63,7 +63,16 @@ const tools = [
         href: "/regex-tester",
         status: "Active",
         color: "from-cyan-500 via-blue-500 to-indigo-500",
+    },
+    {
+        name: "Properties ⇄ YAML/JSON Converter",
+        description: "Convert Java .properties configuration files into clean JSON or YAML structures 100% client-side.",
+        icon: "🔄",
+        href: "/properties-converter",
+        status: "Active",
+        color: "from-blue-500 via-cyan-500 to-indigo-500",
     }
+
 
 
 ];
