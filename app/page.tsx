@@ -56,7 +56,15 @@ const tools = [
         href: "/pgp-encryption-decryption",
         status: "Active",
         color: "from-indigo-500 via-cyan-500 to-emerald-500",
+    }, {
+        name: "Regex Generator & tester",
+        description: "Validate, test, and extract regular expressions with real-time text highlighting and flag modifiers.",
+        icon: "🔍",
+        href: "/regex-tester",
+        status: "Active",
+        color: "from-cyan-500 via-blue-500 to-indigo-500",
     }
+
 
 ];
 
