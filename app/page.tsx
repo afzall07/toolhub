@@ -79,10 +79,15 @@ const tools = [
         href: "/base64-converter",
         status: "Active",
         color: "from-amber-500 via-orange-500 to-red-500",
+    },
+    {
+        name: "Encrypt & Decrypt Text Online",
+        description: "Encrypt and decrypt plain text logs securely in your browser using passwords and AES-256 standard.",
+        icon: "🔐",
+        href: "/text-encryption-decryption",
+        status: "Active",
+        color: "from-amber-400 via-orange-500 to-red-400",
     }
-
-
-
 
 ];
 
