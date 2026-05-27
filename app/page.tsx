@@ -48,7 +48,16 @@ const tools = [
         href: "/jwt-decoder",
         status: "Active",
         color: "from-cyan-500 to-blue-500",
+    },
+    {
+        name: "PGP Message Encryption",
+        description: "Generate ECC key pairs, encrypt payloads, and decrypt messages locally and securely in your browser.",
+        icon: "🔐",
+        href: "/pgp-encryption-decryption",
+        status: "Active",
+        color: "from-indigo-500 via-cyan-500 to-emerald-500",
     }
+
 ];
 
 export default function HomePage() {
@@ -101,7 +110,7 @@ export default function HomePage() {
                                     <h2 className="text-lg font-bold text-slate-100 group-hover:text-white transition-colors">
                                         {tool.name}
                                     </h2>
-                                    <p className="text-xs sm:text-sm text-slate-200 mt-2 line-clamp-2 leading-relaxed">
+                                    <p className="text-xs sm:text-sm text-slate-200 mt-2">
                                         {tool.description}
                                     </p>
                                 </div>
