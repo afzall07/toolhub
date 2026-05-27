@@ -71,7 +71,16 @@ const tools = [
         href: "/properties-converter",
         status: "Active",
         color: "from-blue-500 via-cyan-500 to-indigo-500",
+    },
+    {
+        name: "Base64 Encoder & Decoder",
+        description: "Encode plain text to Base64 format or decode back to readable text locally and securely.",
+        icon: "🔣",
+        href: "/base64-converter",
+        status: "Active",
+        color: "from-amber-500 via-orange-500 to-red-500",
     }
+
 
 
 
